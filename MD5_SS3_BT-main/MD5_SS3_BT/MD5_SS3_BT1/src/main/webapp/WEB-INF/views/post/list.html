@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>My Blog</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+  <style>
+    body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+    #more {display: none;}
+    input[type=text]{
+        /*width: 100%;*/
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        margin-top: 6px;
+        margin-bottom: 16px;
+        resize: vertical;
+    }
+  </style>
+</head>
+<body class="w3-light-grey">
+
+<!-- w3-content defines a container for fixed size centered content,
+and is wrapped around the whole page content, except for the footer in this example -->
+<div class="w3-content" style="max-width:1400px">
+
+  <!-- Header -->
+  <header class="w3-container w3-center w3-padding-32">
+    <h1><b>MY BLOG</b></h1>
+    <p>Welcome to the post of <span class="w3-tag">Nhung274</span></p>
+  </header>
+  <div class="w3-col m8 s12" style="margin: 16px!important;">
+    <p>
+        <a href="/add"><button class="w3-button w3-padding-large w3-white w3-border"><b>Create a post</b></button></a>
+        <a href="/categories"><button class="w3-button w3-padding-large w3-white w3-border"><b>Category List</b></button></a>
+    </p>
+      <form action="/">
+          <input type="text" name="search" placeholder="Search..">
+          <button type="submit" class="w3-button w3-padding-large w3-white w3-border"><b>Search</b></button>
+      </form>
+
+  </div>
+  <!-- Grid -->
+  <div class="w3-row">
+
+      <!-- Blog entry -->
+
+    <th:block th:each="p:${posts}">
+      <div class="w3-card-4 w3-margin w3-white">
+<!--        <th:block th:if="${b.image}!=null">-->
+<!--          <img th:src="@{|/upload/${b.image}|}" alt="image" style="width:100%">-->
+<!--        </th:block>-->
+        <div class="w3-container">
+          <h3><b th:text="${p.title}"></b></h3>
+          <span  th:text="${p.creationDate}"></span>
+            <span th:if="${p.category}" th:text="${p.category.name}"></span>
+        </div>
+
+        <div class="w3-container">
+<!--          <p th:text="${b.content}"></p>-->
+          <div class="w3-row">
+            <div class="w3-col m8 s12">
+              <a th:href="@{|/posts/detail/${p.id}|}"><button class="w3-button w3-padding-large w3-white w3-border" ><b>READ MORE »</b></button></a>
+              <a th:href="@{|/posts/edit/${p.id}|}"><button class="w3-button w3-padding-large w3-white w3-border"><b>Edit</b></button></a>
+              <a th:href="@{|/posts/delete/${p.id}|}"><button class="w3-button w3-padding-large w3-white w3-border"><b>Delete</b></button></a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </th:block>
+      <!-- END BLOG ENTRIES -->
+    </div>
+    <!-- PAGINATION -->
+    <div>
+        <a th:href="@{'/posts'(page=${posts.number - 1})}" th:if="${posts.hasPrevious()}">Previous</a>
+        <span th:text="${posts.number + 1}"></span>/<span th:text="${posts.totalPages}"></span>
+        <a th:href="@{'/posts'(page=${posts.number + 1})}" th:if="${posts.hasNext()}">Next</a>
+    </div>
+
+
+    <!-- END GRID -->
+  </div><br>
+
+  <!-- END w3-content -->
+
+
+</body>
+</html>
